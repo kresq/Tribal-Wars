@@ -6,6 +6,7 @@ Nie jestem programistą piszę je w celu ułatwienie niektórych aspektów gry o
 
  TO DO LIST: 
   $ PANEL USTAWIEŃ
+  
    [ OK ]   # Ustawienie szybkości ataków   
    [ OK ]   # Ustawienie szablonu           
    [ OK ]   # Ustawienie częstotliwości odświerzania / zmiany wiosek razem z licznikiem ilości wiosek 
