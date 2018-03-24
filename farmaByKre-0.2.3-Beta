@@ -1,0 +1,250 @@
+// ==UserScript==
+// @name Kre Farma-Desktop-0.2.3-b
+// @author Kre!
+// @namespace Skrypt do farmienia by Kre!
+// @description Skrypt do farmienia stworzony przez iKre.pl
+// @grant none
+// @match      https://*.plemiona.pl/game.php?*&screen=am_farm*
+// @version 0.2.3-BETA!
+// ==/UserScript== 
+
+////////////////////// Coded by iKre.pl //////////////////////////////////////////////////////////////////
+document.title = 'Farmer by iKre.pl | Plemiona.pl';
+
+////////////////////// VARsony //////////////////////
+var swiat = 'pl124',
+    urlPlac = 'https://' + swiat + '.plemiona.pl/game.php?&screen=place',
+    urlProfil = 'https:/' + swiat + '.plemiona.pl/game.php?screen=info_player',
+    kontoZmianaWioski = $('#village_switch_right'),
+    farmaListaWiosek = ($('#plunder_list tr').length) - 1,
+    reloadTimeout = 1500,
+    licznikZmianyWiosek = 0;
+// Zmienne prędkości / gui
+var czasAtak = parseInt(localStorage.getItem('configCzasAtak')),
+    czasOdswiez = parseInt(localStorage.getItem('configCzasOdswiez')),
+    czasZmianaWisoki = parseInt(localStorage.getItem('configCzasZmianaWisoki')),
+    sprawdzanieWojskWracajacych = parseInt(localStorage.getItem('configSprawdzanieWojskWracajacych')),
+    przerwaWeFarmie = parseInt(localStorage.getItem('configPrzerwaWeFarmie'));
+// CFG INTERFACE
+var configCzasAtak = $('#czasAtak').val(),
+    configczasOdswiez = $('#czasOdswiez').val(),
+    configczasZmianaWisoki = $('#czasZmianaWisoki').val(),
+    configSprawdzanieWojskWracajacych = $('#sprawdzanieWojskWracajacych').val(),
+    configPrzerwaWeFarmie = $('#przerwaWeFarmie').val(),    
+    configoknoKonfiguracji = localStorage.getItem('oknoKonfiguracji');
+// Jednoski w szablonie
+var farmaSzablonPiki = parseInt($("input[name=spear]").val()),
+    farmaSzablonMiecze = parseInt($("input[name=sword]").val()),
+    farmaSzablonLuki = parseInt($("input[name=archer]").val()),
+    farmaSzablonTopory = parseInt($("input[name=axe]").val()),
+    farmaSzablonZwiad = parseInt($("input[name=spy]").val()),
+    farmaSzablonLekka = parseInt($("input[name=light]").val()),
+    farmaSzablonCiezka = parseInt($("input[name=heavy]").val());
+// Jednoski w domu
+var farmaWojskaDomPiki = parseInt($("#units_home #spear").text()),
+    farmaWojskaDomMiecze = parseInt($("#units_home #sword").text()),
+    farmaWojskaDomLuki = parseInt($("#units_home #archer").text()),
+    farmaWojskaDomTopory = parseInt($("#units_home #axe").text()),
+    farmaWojskaDomZwiad = parseInt($("#units_home #spy").text()),
+    farmaWojskaDomLekka = parseInt($("#units_home #light").text()),
+    farmaWojskaDomCiezka = parseInt($("#units_home #heavy").text());
+// var aJax Config 
+var ajaxReloadEnabler = 0,
+    iloscWiosek = parseInt($('#villages_list tr th').text().replace(/[^0-9]/g, ''));
+//\\//\\  Przerwa pomiędzy atakami //\\//\\
+if (czasAtak > 1) {
+    localStorage.getItem('configCzasAtak');
+} else if (czasAtak < 1) {
+    localStorage.setItem('configCzasAtak', 750)
+} else if (localStorage.getItem("configCzasAtak") === null) {
+    localStorage.setItem('configCzasAtak', 750)
+}
+//\\//\\  Przerwa pomiędzy odświeżeniem strony  //\\//\\
+if (czasOdswiez > 1) {
+    localStorage.getItem('configCzasOdswiez');
+} else if (czasOdswiez < 1) {
+    localStorage.setItem('configCzasOdswiez', 180000)
+} else if (localStorage.getItem("configCzasOdswiez") === null) {
+    localStorage.setItem('configCzasOdswiez', 180000)
+}
+//\\//\\  Czas czekania na zmiane wioski  //\\//\\
+if (czasZmianaWisoki > 1) {
+    localStorage.getItem('configCzasZmianaWisoki');
+} else if (czasZmianaWisoki < 1) {
+    localStorage.setItem('configCzasZmianaWisoki', 750)
+} else if (localStorage.getItem("configCzasZmianaWisoki") === null) {
+    localStorage.setItem('configCzasZmianaWisoki', 750)
+}
+//\\//\\  Częstotliwość AJAX  //\\//\\
+if (sprawdzanieWojskWracajacych > 1) {
+    localStorage.getItem('configSprawdzanieWojskWracajacych');
+} else if (sprawdzanieWojskWracajacych < 1) {
+    localStorage.setItem('configSprawdzanieWojskWracajacych', 30000)
+} else if (localStorage.getItem("configSprawdzanieWojskWracajacych") === null) {
+    localStorage.setItem('configSprawdzanieWojskWracajacych', 30000)
+}
+//\\//\\  Przerwa we farmie //\\//\\
+if (przerwaWeFarmie > 1) {
+    localStorage.getItem('configPrzerwaWeFarmie');
+} else if (przerwaWeFarmie < 1) {
+    localStorage.setItem('configPrzerwaWeFarmie', 300000)
+} else if (localStorage.getItem("configPrzerwaWeFarmie") === null) {
+    localStorage.setItem('configPrzerwaWeFarmie', 300000)
+}
+//\\//\\  Okno Konfiguracji //\\//\\
+if (configoknoKonfiguracji == 1) {
+    $( ".zamykanie" ).css('display', '');
+} else if (configoknoKonfiguracji == 0) {
+    $( ".zamykanie" ).css('display', 'none');
+} else if (localStorage.getItem("oknoKonfiguracji") === null) {
+    localStorage.setItem('oknoKonfiguracji', 1)
+}
+
+
+////////////////// END  VAR ///////////////////
+////////////////// Interface  ///////////////////////
+$('#content_value h3').after("<div class='vis konfigFarma '><table id='farm_settings' style='width:100%'><tbody><tr><th><h4>Ustawienia farmera | Skrypt kodowany przez iKre.pl | <img class='widget-button loremm' style='float:right;' src='graphic/minus.png'></h4><button style='display: inline-block'id='configBtnSave' type='submit' class='btn' value='Zapisz'>Zapisz!</button></th></td></form></tr></tbody></table><form class='zamykanie konfWindowHide'><td style='text-align:center'>Przerwa pomiędzy atakami ( ms ) :<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasAtak' value='" + czasAtak + "'></td><td style='text-align:center'>Ile czekać po wysłaniu ataku do odświeżenia ( ms ):<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasOdswiez' value='" + czasOdswiez + "'></td><td style='text-align:center'>Po jakim czasie zmienić wioskę ( ms ):<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasZmianaWisoki' value='" + czasZmianaWisoki + "'>Co ile wysyłać zapytanie dotyczące jednostek wracających ( ms ) :<input type='number' style='display: block'  style='display: block'  style='display: block'  id='sprawdzanieWojskWracajacych' value='" + sprawdzanieWojskWracajacych + "'>Przerwa w farmie? ( ms )<input type='number' style='display: block'  style='display: block'  style='display: block'  id='przerwaWeFarmie' value='" + przerwaWeFarmie + "'>Szablon (Aktualnie nie działą): <select name='szablonWybor'><option value='A' id='selectA'>A</option><option value='B' id='selectB'>B</option></form></div></div></div>")
+$('.loremm').click(function () {  
+
+    if($( ".zamykanie" ).hasClass( "konfWindowHide" )){
+        $('.konfWindowHide').css('display', 'none');
+        $('.konfWindowHide').removeClass('konfWindowHide');
+        $('.zamykanie').addClass('konfWindowShow');
+        $('.loremm').attr('src','graphic/plus.png');
+        localStorage.setItem('oknoKonfiguracji', 0)
+    }else if ($( ".zamykanie" ).hasClass( "konfWindowShow" )){
+        $('.konfWindowShow').css('display', '');
+        $('.konfWindowShow').removeClass('konfWindowShow');
+        $('.zamykanie').addClass('konfWindowHide');
+        $('.loremm').attr('src','graphic/minus.png');
+        localStorage.setItem('oknoKonfiguracji', 1)
+    }
+});
+
+
+$('#configBtnSave').click(function () {
+    localStorage.setItem('configCzasAtak', parseInt($('#czasAtak').val()));
+    localStorage.setItem('configCzasOdswiez', parseInt($('#czasOdswiez').val()));
+    localStorage.setItem('configCzasZmianaWisoki', parseInt($('#czasZmianaWisoki').val()));
+    localStorage.setItem('configSprawdzanieWojskWracajacych', parseInt($('#sprawdzanieWojskWracajacych').val()));
+    localStorage.setItem('configPrzerwaWeFarmie', parseInt($('#przerwaWeFarmie').val()));
+    location.reload();
+    console.log('debug1');
+});
+////////////////// END  Interface ///////////////////
+function czyszczenieListy() {
+    $("a.farm_icon_c, a.farm_icon_b, a.farm_icon_a").click(function () {
+        $(this).closest("tr").remove(); // Usuwanie wiosek z listy po zaatakowaniu (Tymczasowo do odświżenia strony) 
+    });
+}
+
+function farma() {
+    var x = $.map($("a.farm_icon_c, a.farm_icon_c, a.farm_icon_c"), function (v, i) {
+        return [v]
+    });
+
+    function farmaKod() {
+        if (farmaSzablonLekka <= farmaWojskaDomLekka && ($('#plunder_list tr').length) - 1 > 1) {
+            $(x.shift())[0].click();
+        } else if (($('#plunder_list tr').length) - 1 <= 1) {
+            clearInterval(farmienie);
+            //location.reload();
+        }
+    }
+
+    function zmianaWioskiNonPremiumKod() {
+
+        if (kontoZmianaWioski.length !== 1) {
+            clearInterval(farmienie);
+            location.reload()
+            console.log('debug2');
+        }
+    };
+
+    function zmianaWioskiPremiumKod() {
+
+        if (kontoZmianaWioski.length == 1) {
+            clearInterval(farmienie);
+            licznikZmianyWiosek++;
+            $(kontoZmianaWioski)[0].click();
+
+
+
+        }
+    };
+
+    function ajaxLekkaKod() {
+        $.get(urlPlac, function (data) {
+            var farmaAjaxDomLekka = $(data).find('#units_entry_all_light').text().replace(/[^0-9]/g, ''),
+                farmaAjaxDomZwiad = $(data).find('#units_entry_all_spy').text().replace(/[^0-9]/g, '');
+
+            if (farmaSzablonLekka <= farmaAjaxDomLekka && farmaSzablonZwiad <= farmaAjaxDomZwiad) {
+                ajaxReloadEnabler = 1;
+            } else if (farmaSzablonLekka > farmaAjaxDomLekka && farmaSzablonZwiad > farmaAjaxDomZwiad) {
+                ajaxReloadEnabler = 0;
+            }
+            console.log("Ajax enabler : " + ajaxReloadEnabler + " | Wojsko: " + farmaAjaxDomLekka);
+            if (farmaSzablonLekka <= farmaAjaxDomLekka && farmaListaWiosek >= 1 && ajaxReloadEnabler == 1) {
+                console.log("reload i wysyłam");
+                location.reload();
+                console.log('debug3');
+            }
+        });
+
+
+    } //sprawdzanie wojska  parseInt($("input[name=light]").val()) <= parseInt($("#units_home #light").text()) && parseInt($("input[name=spy]").val()) <= parseInt($("#units_home #spy").text())
+
+    function sprawdzanieWojskaKod() {
+        //console.log('Sprawdzam');
+        if (farmaSzablonLekka > parseInt($("#units_home #light").text()) || farmaSzablonZwiad > parseInt($("#units_home #spy").text())) {
+            clearInterval(farmienie);
+
+        }
+    }
+
+    function sprawdzanieAjax() {
+        //console.log('Sprawdzam');
+        if (farmaSzablonLekka > parseInt($("#units_home #light").text()) || farmaSzablonZwiad > parseInt($("#units_home #spy").text())) {
+            //ajaxLekka = setInterval(ajaxLekkaKod, sprawdzanieWojskWracajacych);
+            ajaxLekkaKod();
+        }
+    }
+    //Interwały
+    farmienie = setInterval(farmaKod, czasAtak);
+    sprawdzanieWojska = setInterval(sprawdzanieWojskaKod, czasAtak - 100);
+    sprawdzanieWojska = setInterval(sprawdzanieAjax, sprawdzanieWojskWracajacych + 100);
+    if (kontoZmianaWioski.length >= 1) {
+        //clearInterval(farmienie);
+        zmianaWioskiPremium = setTimeout(zmianaWioskiPremiumKod, czasOdswiez);
+    } else if (kontoZmianaWioski.length <= 0) {
+        //clearInterval(farmienie);
+        zmianaWioskiNonPremium = setTimeout(zmianaWioskiNonPremiumKod, czasOdswiez);
+    }
+    if (farmaSzablonLekka > parseInt($('#units_home #light').text()) || farmaListaWiosek <= 1) {
+
+    }
+    if (farmaSzablonZwiad > farmaWojskaDomZwiad) {
+        clearInterval(farmienie);
+    }
+}
+farma();
+czyszczenieListy();
+
+function titleTimer() {
+    var start = new Date();
+    var pad = function (i) {
+        var s = ('0' + Math.floor(i));
+        return s.substr(s.length - 2)
+    };
+    var newTimerStr = function () {
+        var t = (new Date() - start) / 1000;
+        var h = t / 3600;
+        var m = (t / 60) % 60;
+        var s = (t % 60);
+        return [h, m, s].map(pad).join(':');
+    };
+    setInterval(function () {
+        document.title = newTimerStr() + ' | Farmer iKre.pl';
+    }, 1000);
+};
+titleTimer();
