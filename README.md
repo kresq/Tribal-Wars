@@ -14,8 +14,7 @@ Nie jestem programistą piszę je w celu ułatwienie niektórych aspektów gry o
    [ ] Wybieranie szablonu za pomocą dropdowna
    [ ] Poprawienie szablonu 
    $ Konfiguracja działająca w skrypcie 
-   [ ]   # Zamiana metody sprawdzania jednostek w domu z Ajax na API                         
-   [ Mniej nie będzie, zależne od interwałów usera ]   # Ograniczenie poleceń wysyłanych do przeglądarki                          
+   [ ]   # Zamiana metody sprawdzania jednostek w domu z Ajax na API                                               
   $ Skrypt                 
    [ OK ]   # Czyszczenie wiosek z listy                        
    [  ]   # Czyszczenie kodu                                           
