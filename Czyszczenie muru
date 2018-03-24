@@ -1,0 +1,183 @@
+// ==UserScript==
+// @name iKre.pl Czyszczenie muru
+// @author iKre!
+// @namespace Skrypt do czyszczenie muru
+// @description Skrypt dodaje opcje automatycznego wysłania ataku na wioskę oraz zniszczenia muru.Skrypt w fazie rozwojowej. Kod jest nieoptymalny!!
+// @grant none
+// @match *://plp4.plemiona.pl/*
+// ==/UserScript==
+// Dodawanie do tabelki farmera 
+$('#plunder_list tr:first').append('<th rowspan="2"><img id="sendall"src="https://dspl.innogamescdn.com/8.119/36500/graphic/unit/unit_ram.png" class=""></th>');
+
+
+var lista = $('#plunder_list tr:not(:first, :last)').length,
+    listaWioski = [],
+    //listaWioskiId = [],
+    koordyWioski = [],
+    axe = 0,
+    spy = 0,
+    ram = 0,
+    send = $('#target_attack'),
+    comf = $('#troop_confirm_go');
+
+for (i = 1; i <= $('#plunder_list tr:not(:first, :last)').length; i++) {
+    koordyWioski.push($('#plunder_list tr:not(:first)').eq(i).find('td').eq(3).find('a').text().split(/[()|]/));
+}
+
+for (i = 0; i <= lista; i++) {
+    listaWioski.push(parseInt($('#plunder_list tr:not(:first, :last)').eq(i).find('td').eq(6).text()));
+
+}
+
+
+//console.log(listaWioski)
+$(document).ready(function () {
+    var skryptlen = $('a#atakaMuru').length,
+        wioskaURL = [];
+    $("img.atakaMuru").click(function () {
+        $(this).closest("tr").remove(); // Usuwanie wiosek z listy po zaatakowaniu (Tymczasowo do odświżenia strony) 
+    });
+
+    function send() {
+        $('#target_attack').click();
+    }
+
+    function comf() {
+        $('#troop_confirm_go').click();
+    }
+
+    if (window.location.href.indexOf("&from=simulator&") > -1) {
+        setTimeout(function () {
+            send();
+        }, 800);
+    }
+
+    if (window.location.href.indexOf("&try=confirm") > -1) {
+        setTimeout(function () {
+            comf();
+        }, 800);
+    }
+
+    for (i = 0; i <= skryptlen; i++) {
+        wioskaURL.push($('a#atakaMuru').eq(i).attr('href'));
+    }
+  
+    if (window.location.href.indexOf("&screen=place") > -1) {
+        setTimeout(function () {
+          window.close()
+        }, 1600);
+    }
+  
+  
+});
+
+
+
+
+for (i = 0; i <= lista; i++) {
+
+    if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 1) {
+        spy = 1;
+        axe = 10;
+        ram = 2;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 2) {
+        spy = 1;
+        axe = 10;
+        ram = 4
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 3) {
+        spy = 1;
+        axe = 28;
+        ram = 7;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 4) {
+        spy = 1;
+        axe = 35;
+        ram = 10;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 5) {
+        spy = 1;
+        axe = 79;
+        ram = 15;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 6) {
+        spy = 1;
+        axe = 79;
+        ram = 19;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 7) {
+        spy = 1;
+        axe = 172;
+        ram = 25;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 8) {
+        spy = 1;
+        axe = 172;
+        ram = 30;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 9) {
+        spy = 1;
+        axe = 319;
+        ram = 38;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 10) {
+        spy = 1;
+        axe = 319;
+        ram = 46;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 11) {
+        spy = 1;
+        axe = 545;
+        ram = 55;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 12) {
+        spy = 1;
+        axe = 545;
+        ram = 66;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 13) {
+        spy = 1;
+        axe = 823;
+        ram = 77;
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 14) {
+        spy = 1;
+        axe = 823;
+        ram = 91;
+    } else {
+        spy = 0;
+        axe = 0;
+        ram = 0;
+    }
+    //if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) > 0) {
+    //      $('#plunder_list tr:gt(1)').eq(i).append('<td><a id="atakaMuru" href="https://plp4.plemiona.pl/game.php?village=245901&screen=place&x=' + koordyWioski[i][1] + '&y=' + koordyWioski[i][2] + '&from=simulator&axe=' + axe + '&spy=' + spy + '&ram=' + ram + '" target="_blank"><img class="atakaMuru" src="https://dspl.innogamescdn.com/8.119/36500/graphic/unit/unit_ram.png" class=""></a></td>');
+    //
+    //} else {
+    //   $('#plunder_list tr:gt(1)').eq(i).append('lorem')
+    //}
+    $('#plunder_list tr:gt(1)').eq(i).append('<td><a id="atakaMuru" href="https://plp4.plemiona.pl/game.php?village=245901&screen=place&x=' + koordyWioski[i][1] + '&y=' + koordyWioski[i][2] + '&from=simulator&axe=' + axe + '&spy=' + spy + '&ram=' + ram + '" target="_blank"><img class="atakaMuru" src="https://dspl.innogamescdn.com/8.119/36500/graphic/unit/unit_ram.png" class=""></a></td>');
+    spy = 0;
+    axe = 0;
+    ram = 0;
+    if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 1) {
+
+        $('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').css('background', 'rgb(241, 255, 183)');
+
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 2) {
+
+        $('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').css('background', 'rgb(113, 239, 79)');
+
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 3) {
+
+        $('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').css('background', 'rgb(163, 255, 230)');
+
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 4) {
+
+        $('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').css('background', 'rgb(163, 239, 255)');
+
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 5) {
+
+        $('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').css('background', 'rgb(163, 207, 255)');
+
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) == 6) {
+
+        $('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').css('background', 'rgb(163, 182, 255)');
+
+    } else if (parseInt($('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').eq(6).text()) >= 7) {
+
+        $('#plunder_list tr:not(:first, :last)').eq(i + 1).find('td').css('background', 'rgb(247, 163, 255)');
+
+    }
+
+
+
+
+}
