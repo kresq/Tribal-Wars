@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name iKre.pl Czyszczenie muru
 // @author iKre!
-// @namespace Skrypt do czyszczenie muru
+// @namespace Skrypt do czyszczenie muru.
 // @description Skrypt dodaje opcje automatycznego wysłania ataku na wioskę oraz zniszczenia muru.Skrypt w fazie rozwojowej. Kod jest nieoptymalny!!
 // @grant none
 // @match *://plp4.plemiona.pl/*
