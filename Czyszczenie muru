@@ -143,7 +143,7 @@ for (i = 0; i <= lista; i++) {
     //} else {
     //   $('#plunder_list tr:gt(1)').eq(i).append('lorem')
     //}
-    $('#plunder_list tr:gt(1)').eq(i).append('<td><a id="atakaMuru" href="https://plp4.plemiona.pl/game.php?village=245901&screen=place&x=' + koordyWioski[i][1] + '&y=' + koordyWioski[i][2] + '&from=simulator&axe=' + axe + '&spy=' + spy + '&ram=' + ram + '" target="_blank"><img class="atakaMuru" src="https://dspl.innogamescdn.com/8.119/36500/graphic/unit/unit_ram.png" class=""></a></td>');
+    $('#plunder_list tr:gt(1)').eq(i).append('<td><a id="atakaMuru" href="https://plp4.plemiona.pl/game.php?village='+game_data.village.id+'&screen=place&x=' + koordyWioski[i][1] + '&y=' + koordyWioski[i][2] + '&from=simulator&axe=' + axe + '&spy=' + spy + '&ram=' + ram + '" target="_blank"><img class="atakaMuru" src="https://dspl.innogamescdn.com/8.119/36500/graphic/unit/unit_ram.png" class=""></a></td>');
     spy = 0;
     axe = 0;
     ram = 0;
