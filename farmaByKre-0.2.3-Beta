@@ -30,7 +30,8 @@ var configCzasAtak = $('#czasAtak').val(),
     configczasOdswiez = $('#czasOdswiez').val(),
     configczasZmianaWisoki = $('#czasZmianaWisoki').val(),
     configSprawdzanieWojskWracajacych = $('#sprawdzanieWojskWracajacych').val(),
-    configPrzerwaWeFarmie = $('#przerwaWeFarmie').val(),    
+    configPrzerwaWeFarmie = $('#przerwaWeFarmie').val(),
+    configSzablonFarma = localStorage.getItem('szablonFarma'),
     configoknoKonfiguracji = localStorage.getItem('oknoKonfiguracji');
 // Jednoski w szablonie
 var farmaSzablonPiki = parseInt($("input[name=spear]").val()),
@@ -39,6 +40,7 @@ var farmaSzablonPiki = parseInt($("input[name=spear]").val()),
     farmaSzablonTopory = parseInt($("input[name=axe]").val()),
     farmaSzablonZwiad = parseInt($("input[name=spy]").val()),
     farmaSzablonLekka = parseInt($("input[name=light]").val()),
+    farmaSzablonLukKon = parseInt($("input[name=marcher]").val()),
     farmaSzablonCiezka = parseInt($("input[name=heavy]").val());
 // Jednoski w domu
 var farmaWojskaDomPiki = parseInt($("#units_home #spear").text()),
@@ -93,38 +95,45 @@ if (przerwaWeFarmie > 1) {
 }
 //\\//\\  Okno Konfiguracji //\\//\\
 if (configoknoKonfiguracji == 1) {
-    $( ".zamykanie" ).css('display', '');
+    $(".zamykanie").css('display', '');
 } else if (configoknoKonfiguracji == 0) {
-    $( ".zamykanie" ).css('display', 'none');
+    $(".zamykanie").css('display', 'none');
 } else if (localStorage.getItem("oknoKonfiguracji") === null) {
     localStorage.setItem('oknoKonfiguracji', 1)
 }
 
+//\\//\\  Opcje CFG//\\//\\
 
 ////////////////// END  VAR ///////////////////
 ////////////////// Interface  ///////////////////////
-$('#content_value h3').after("<div class='vis konfigFarma '><table id='farm_settings' style='width:100%'><tbody><tr><th><h4>Ustawienia farmera | Skrypt kodowany przez iKre.pl | <img id='ikre-close' class='widget-button loremm' style='float:right;' src='graphic/minus.png'></h4><button style='display: inline-block'id='configBtnSave' type='submit' class='btn' value='Zapisz'>Zapisz!</button></th></td></form></tr></tbody></table><form class='zamykanie konfWindowHide'><td style='text-align:center'>Przerwa pomiędzy atakami ( ms ) :<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasAtak' value='" + czasAtak + "'></td><td style='text-align:center'>Ile czekać po wysłaniu ataku do odświeżenia ( ms ):<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasOdswiez' value='" + czasOdswiez + "'></td><td style='text-align:center'>Po jakim czasie zmienić wioskę ( ms ):<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasZmianaWisoki' value='" + czasZmianaWisoki + "'>Co ile wysyłać zapytanie dotyczące jednostek wracających ( ms ) :<input type='number' style='display: block'  style='display: block'  style='display: block'  id='sprawdzanieWojskWracajacych' value='" + sprawdzanieWojskWracajacych + "'>Przerwa w farmie? ( ms )<input type='number' style='display: block'  style='display: block'  style='display: block'  id='przerwaWeFarmie' value='" + przerwaWeFarmie + "'>Szablon (Aktualnie nie działą): <select name='szablonWybor'><option value='A' id='selectA'>A</option><option value='B' id='selectB'>B</option></form></div></div></div>")
-if ( parseInt(localStorage.getItem('oknoKonfiguracji')) == 1 ){
-    $('.zamykanie').css('display', '');
-    $('.loremm').attr('src','graphic/minus.png');
-}else if ( parseInt(localStorage.getItem('oknoKonfiguracji')) == 0 ){
-    $('.zamykanie').css('display', 'none');
-    $('.loremm').attr('src','graphic/plus.png');
+$('#content_value h3').after("<div class='vis konfigFarma '><table id='farm_settings' style='width:100%'><tbody><tr><th><h4>Ustawienia farmera | Skrypt kodowany przez iKre.pl | <img id='ikre-close' class='widget-button loremm' style='float:right;' src='graphic/minus.png'></h4><button style='display: inline-block'id='configBtnSave' type='submit' class='btn' value='Zapisz'>Zapisz!</button></th></td></form></tr></tbody></table><form class='zamykanie konfWindowHide'><td style='text-align:center'>Przerwa pomiędzy atakami ( ms ) :<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasAtak' value='" + czasAtak + "'></td><td style='text-align:center'>Ile czekać po wysłaniu ataku do odświeżenia ( ms ):<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasOdswiez' value='" + czasOdswiez + "'></td><td style='text-align:center'>Po jakim czasie zmienić wioskę ( ms ):<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasZmianaWisoki' value='" + czasZmianaWisoki + "'>Co ile wysyłać zapytanie dotyczące jednostek wracających ( ms ) :<input type='number' style='display: block'  style='display: block'  style='display: block'  id='sprawdzanieWojskWracajacych' value='" + sprawdzanieWojskWracajacych + "'>Przerwa w farmie? ( ms )<input type='number' style='display: block'  style='display: block'  style='display: block'  id='przerwaWeFarmie' value='" + przerwaWeFarmie + "'>Szablon: <select id='szablonOpt' name='szablonWybor'><option value='A' id='selectA'>A</option><option value='B' id='selectB'>B</option><option value='C' id='selectC'>C</option></form></div></div></div>")
+if (localStorage.getItem('szablonFarma') != null) {
+    $('#szablonOpt').val(localStorage.getItem('szablonFarma'));
+} else {
+    localStorage.setItem('szablonFarma', 'A')
 }
-$('.loremm').click(function () {  
 
-    if($( ".zamykanie" ).hasClass( "konfWindowHide" )){
+if (parseInt(localStorage.getItem('oknoKonfiguracji')) == 1) {
+    $('.zamykanie').css('display', '');
+    $('.loremm').attr('src', 'graphic/minus.png');
+} else if (parseInt(localStorage.getItem('oknoKonfiguracji')) == 0) {
+    $('.zamykanie').css('display', 'none');
+    $('.loremm').attr('src', 'graphic/plus.png');
+}
+$('.loremm').click(function () {
+
+    if ($(".zamykanie").hasClass("konfWindowHide")) {
         $('.konfWindowHide').css('display', 'none');
         $('.konfWindowHide').removeClass('konfWindowHide');
         $('.zamykanie').addClass('konfWindowShow');
-        $('.loremm').attr('src','graphic/plus.png');
+        $('.loremm').attr('src', 'graphic/plus.png');
         localStorage.setItem('oknoKonfiguracji', 0)
-    }else if ($( ".zamykanie" ).hasClass( "konfWindowShow" )){
+    } else if ($(".zamykanie").hasClass("konfWindowShow")) {
         $('.konfWindowShow').css('display', '');
         $('.konfWindowShow').removeClass('konfWindowShow');
         $('.zamykanie').addClass('konfWindowHide');
-        $('.loremm').attr('src','graphic/minus.png');
-        localStorage.setItem('oknoKonfiguracji', 1)
+        $('.loremm').attr('src', 'graphic/minus.png');
+        localStorage.setItem('oknoKonfiguracji', 1);
     }
 });
 
@@ -135,6 +144,8 @@ $('#configBtnSave').click(function () {
     localStorage.setItem('configCzasZmianaWisoki', parseInt($('#czasZmianaWisoki').val()));
     localStorage.setItem('configSprawdzanieWojskWracajacych', parseInt($('#sprawdzanieWojskWracajacych').val()));
     localStorage.setItem('configPrzerwaWeFarmie', parseInt($('#przerwaWeFarmie').val()));
+    localStorage.setItem('szablonFarma', $('#szablonOpt').val())
+
     location.reload();
     console.log('debug1');
 });
@@ -146,9 +157,24 @@ function czyszczenieListy() {
 }
 
 function farma() {
-    var x = $.map($("a.farm_icon_c, a.farm_icon_c, a.farm_icon_c"), function (v, i) {
-        return [v]
-    });
+    if ($('#szablonOpt').val() == "A") {
+        var x = $.map($("a.farm_icon_a, a.farm_icon_a, a.farm_icon_a"), function (v, i) {
+            return [v]
+        });
+        console.log('A');
+    } else if ($('#szablonOpt').val() == "B") {
+        var x = $.map($("a.farm_icon_b, a.farm_icon_b, a.farm_icon_b"), function (v, i) {
+            return [v]
+        });
+        console.log('B');
+    } else if ($('#szablonOpt').val() == "C") {
+        var x = $.map($("a.farm_icon_c, a.farm_icon_c, a.farm_icon_c"), function (v, i) {
+            return [v]
+        });
+        console.log('C');
+    }
+
+
 
     function farmaKod() {
         if (farmaSzablonLekka <= farmaWojskaDomLekka && ($('#plunder_list tr').length) - 1 > 1) {
@@ -203,9 +229,17 @@ function farma() {
 
     function sprawdzanieWojskaKod() {
         //console.log('Sprawdzam');
-        if (farmaSzablonLekka > parseInt($("#units_home #light").text()) || farmaSzablonZwiad > parseInt($("#units_home #spy").text())) {
-            clearInterval(farmienie);
 
+        if ($('#szablonOpt').val() == "A" || $('#szablonOpt').val() == "B") {
+            if (farmaSzablonLekka > parseInt($("#units_home #light").text()) || farmaSzablonZwiad > parseInt($("#units_home #spy").text()) || farmaSzablonLukKon > parseInt($("#units_home #marcher").text()) || farmaSzablonCiezka > parseInt($("#units_home #hevay").text())) {
+                clearInterval(farmienie);
+
+            }
+        }else if ($('#szablonOpt').val() == "C" ){
+            if ( parseInt(Accountmanager.farm.current_units.spy) > farmaSzablonZwiad && parseInt(Accountmanager.farm.current_units.light) == farmaSzablonLekka && parseInt(Accountmanager.farm.current_units.hevay) == farmaSzablonCiezka && parseInt(Accountmanager.farm.current_units.marcher) == farmaSzablonLukKon ) {
+                clearInterval(farmienie);
+
+            }
         }
     }
 
