@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name Kre Farma-Desktop-0.2.3-b
+// @name Kre Farma-Desktop-0.2.4-b
 // @author Kre!
 // @namespace Skrypt do farmienia by Kre!
 // @description Skrypt do farmienia stworzony przez iKre.pl
 // @grant none
 // @match      https://*.plemiona.pl/game.php?*&screen=am_farm*
-// @version 0.2.3-BETA!
+// @version 0.2.4-BETA!
 // ==/UserScript== 
 
 ////////////////////// Coded by iKre.pl //////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ if (configoknoKonfiguracji == 1) {
 
 ////////////////// END  VAR ///////////////////
 ////////////////// Interface  ///////////////////////
-$('#content_value h3').after("<div class='vis konfigFarma '><table id='farm_settings' style='width:100%'><tbody><tr><th><h4>Ustawienia farmera | Skrypt kodowany przez iKre.pl | <img id='ikre-close' class='widget-button loremm' style='float:right;' src='graphic/minus.png'></h4><button style='display: inline-block'id='configBtnSave' type='submit' class='btn' value='Zapisz'>Zapisz!</button></th></td></form></tr></tbody></table><form class='zamykanie konfWindowHide'><td style='text-align:center'>Przerwa pomiędzy atakami ( ms ) :<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasAtak' value='" + czasAtak + "'></td><td style='text-align:center'>Ile czekać po wysłaniu ataku do odświeżenia ( ms ):<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasOdswiez' value='" + czasOdswiez + "'></td><td style='text-align:center'>Po jakim czasie zmienić wioskę ( ms ):<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasZmianaWisoki' value='" + czasZmianaWisoki + "'>Co ile wysyłać zapytanie dotyczące jednostek wracających ( ms ) :<input type='number' style='display: block'  style='display: block'  style='display: block'  id='sprawdzanieWojskWracajacych' value='" + sprawdzanieWojskWracajacych + "'>Przerwa w farmie? ( ms )<input type='number' style='display: block'  style='display: block'  style='display: block'  id='przerwaWeFarmie' value='" + przerwaWeFarmie + "'>Szablon: <select id='szablonOpt' name='szablonWybor'><option value='A' id='selectA'>A</option><option value='B' id='selectB'>B</option><option value='C' id='selectC'>C</option></form></div></div></div>")
+$('#content_value h3').after("<div class='vis konfigFarma '><table id='farm_settings' style='width:100%'><tbody><tr><th><h4>Ustawienia farmera | Skrypt kodowany przez iKre.pl | <img id='ikre-close' class='widget-button loremm' style='float:right;' src='graphic/minus.png'></h4><button style='display: inline-block'id='configBtnSave' type='submit' class='btn' value='Zapisz'>Zapisz!</button></th></td></form></tr></tbody></table><form class='zamykanie konfWindowHide'><td style='text-align:center'>Przerwa pomiędzy atakami ( ms ) :<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasAtak' value='" + czasAtak + "'></td><td style='text-align:center'>Ile czekać po wysłaniu ataku do odświeżenia ( ms ):<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasOdswiez' value='" + czasOdswiez + "'></td><td style='text-align:center'>Po jakim czasie zmienić wioskę ( ms ):<input type='number' style='display: block'  style='display: block'  style='display: block'  id='czasZmianaWisoki' value='" + czasZmianaWisoki + "'>Co ile wysyłać zapytanie dotyczące jednostek wracających ( ms ) :<input type='number' style='display: block'  style='display: block'  style='display: block'  id='sprawdzanieWojskWracajacych' value='" + sprawdzanieWojskWracajacych + "'>Przerwa w farmie? ( ms )<input type='number' style='display: block'  style='display: block'  style='display: block'  id='przerwaWeFarmie' value='" + przerwaWeFarmie + "'>Szablon (Aktualnie nie działą): <select id='szablonOpt' name='szablonWybor'><option value='A' id='selectA'>A</option><option value='B' id='selectB'>B</option><option value='C' id='selectC'>C</option></form></div></div></div>")
 if (localStorage.getItem('szablonFarma') != null) {
     $('#szablonOpt').val(localStorage.getItem('szablonFarma'));
 } else {
@@ -147,9 +147,12 @@ $('#configBtnSave').click(function () {
     localStorage.setItem('szablonFarma', $('#szablonOpt').val())
 
     location.reload();
-    console.log('debug1');
+    //console.log('debug1');
 });
-////////////////// END  Interface ///////////////////
+////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////
+////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////
+////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////
+////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////////////////////// END  Interface ///////////////////
 function czyszczenieListy() {
     $("a.farm_icon_b, a.farm_icon_b, a.farm_icon_a").click(function () {
         $(this).closest("tr").remove(); // Usuwanie wiosek z listy po zaatakowaniu (Tymczasowo do odświżenia strony) 
@@ -161,17 +164,17 @@ function farma() {
         var x = $.map($("a.farm_icon_a, a.farm_icon_a, a.farm_icon_a"), function (v, i) {
             return [v]
         });
-        console.log('A');
+        //console.log('A');
     } else if ($('#szablonOpt').val() == "B") {
         var x = $.map($("a.farm_icon_b, a.farm_icon_b, a.farm_icon_b"), function (v, i) {
             return [v]
         });
-        console.log('B');
+        //console.log('B');
     } else if ($('#szablonOpt').val() == "C") {
         var x = $.map($("a.farm_icon_c, a.farm_icon_c, a.farm_icon_c"), function (v, i) {
             return [v]
         });
-        console.log('C');
+        //console.log('C');
     }
 
 
@@ -179,9 +182,11 @@ function farma() {
     function farmaKod() {
         if (farmaSzablonLekka <= farmaWojskaDomLekka && ($('#plunder_list tr').length) - 1 > 1) {
             $(x.shift())[0].click();
+            //console.log("deb 1");
         } else if (($('#plunder_list tr').length) - 1 <= 1) {
             clearInterval(farmienie);
             //location.reload();
+            //console.log("deb 2");
         }
     }
 
@@ -190,7 +195,7 @@ function farma() {
         if (kontoZmianaWioski.length !== 1) {
             clearInterval(farmienie);
             location.reload()
-            console.log('debug2');
+            //console.log('debug3');
         }
     };
 
@@ -216,11 +221,11 @@ function farma() {
             } else if (farmaSzablonLekka > farmaAjaxDomLekka && farmaSzablonZwiad > farmaAjaxDomZwiad) {
                 ajaxReloadEnabler = 0;
             }
-            console.log("Ajax enabler : " + ajaxReloadEnabler + " | Wojsko: " + farmaAjaxDomLekka);
+            //console.log("Ajax enabler : " + ajaxReloadEnabler + " | Wojsko: " + farmaAjaxDomLekka);
             if (farmaSzablonLekka <= farmaAjaxDomLekka && farmaListaWiosek >= 1 && ajaxReloadEnabler == 1) {
-                console.log("reload i wysyłam");
+                //console.log("reload i wysyłam");
                 location.reload();
-                console.log('debug3');
+                //console.log('debug4');
             }
         });
 
@@ -230,17 +235,29 @@ function farma() {
     function sprawdzanieWojskaKod() {
         //console.log('Sprawdzam');
 
-        if ($('#szablonOpt').val() == "A" || $('#szablonOpt').val() == "B") {
-            if (farmaSzablonLekka > parseInt($("#units_home #light").text()) || farmaSzablonZwiad > parseInt($("#units_home #spy").text()) || farmaSzablonLukKon > parseInt($("#units_home #marcher").text()) || farmaSzablonCiezka > parseInt($("#units_home #hevay").text())) {
-                clearInterval(farmienie);
+        // if ($('#szablonOpt').val() == "A" || $('#szablonOpt').val() == "B") {
+        //     if (farmaSzablonLekka > parseInt($("#units_home #light").text()) || farmaSzablonZwiad > parseInt($("#units_home #spy").text()) || farmaSzablonLukKon > parseInt($("#units_home #marcher").text()) || farmaSzablonCiezka > parseInt($("#units_home #hevay").text())) {
+        //         clearInterval(farmienie);
+        //         clearInterval(sprawdzanieWojska);
 
-            }
-        }else if ($('#szablonOpt').val() == "C" ){
-            if ( parseInt(Accountmanager.farm.current_units.spy) > farmaSzablonZwiad && parseInt(Accountmanager.farm.current_units.light) == farmaSzablonLekka && parseInt(Accountmanager.farm.current_units.hevay) == farmaSzablonCiezka && parseInt(Accountmanager.farm.current_units.marcher) == farmaSzablonLukKon ) {
-                clearInterval(farmienie);
+        //     }
+        // }
+        // if ($('#szablonOpt').val() == "C" && parseInt(Accountmanager.farm.current_units.spy) == 0) {
+        //     clearInterval(farmienie);
+        //     clearInterval(sprawdzanieWojska);
 
-            }
-        }
+        //     console.log('spy: ' + parseInt(Accountmanager.farm.current_units.spy));
+
+        // }
+        // if ((parseInt(Accountmanager.farm.current_units.light) < 0) && (parseInt(Accountmanager.farm.current_units.hevay) == 0) && (parseInt(Accountmanager.farm.current_units.marcher) == 0)) {
+        //     clearInterval(farmienie);
+        //     clearInterval(sprawdzanieWojska);
+        //     console.log('Lekka: ' + parseInt(Accountmanager.farm.current_units.light));
+        //     console.log('hevay: ' + parseInt(Accountmanager.farm.current_units.hevay));
+        //     console.log('marcher: ' + parseInt(Accountmanager.farm.current_units.marcher));
+        // }
+
+        //console.log("deb 6");
     }
 
     function sprawdzanieAjax() {
@@ -249,11 +266,18 @@ function farma() {
             //ajaxLekka = setInterval(ajaxLekkaKod, sprawdzanieWojskWracajacych);
             ajaxLekkaKod();
         }
+        
     }
+
+
+    
+
+
     //Interwały
     farmienie = setInterval(farmaKod, czasAtak);
-    sprawdzanieWojska = setInterval(sprawdzanieWojskaKod, czasAtak - 100);
-    sprawdzanieWojska = setInterval(sprawdzanieAjax, sprawdzanieWojskWracajacych + 100);
+    sprawdzanieWojska = setInterval(sprawdzanieWojskaKod, czasAtak );
+    //sprawdzanieWojska = setInterval(sprawdzanieAjax, sprawdzanieWojskWracajacych + 100);
+    
     if (kontoZmianaWioski.length >= 1) {
         //clearInterval(farmienie);
         zmianaWioskiPremium = setTimeout(zmianaWioskiPremiumKod, czasOdswiez);
@@ -268,8 +292,37 @@ function farma() {
         clearInterval(farmienie);
     }
 }
+
+
+function intervals(){
+    if( Accountmanager.farm.current_units.spy == "0" ){
+        clearInterval(farmienie);
+        clearInterval(sprawdzanieWojska);
+    }
+    if ($('#szablonOpt').val() == "A" || $('#szablonOpt').val() == "B") {
+        if (farmaSzablonLekka > parseInt($("#units_home #light").text()) || farmaSzablonZwiad > parseInt($("#units_home #spy").text()) || farmaSzablonLukKon > parseInt($("#units_home #marcher").text()) || farmaSzablonCiezka > parseInt($("#units_home #hevay").text())) {
+            clearInterval(farmienie);
+            clearInterval(sprawdzanieWojska);
+
+        }
+    }
+    if ($('#szablonOpt').val() == "C") {
+        if ( parseInt(Accountmanager.farm.current_units.spy) == 0 ||Accountmanager.farm.current_units.light == "0" && Accountmanager.farm.current_units.heavy == "0" && Accountmanager.farm.current_units.marcher == "0")
+        clearInterval(farmienie);
+        clearInterval(sprawdzanieWojska);
+        
+
+
+    }
+
+    //console.log("deb 10");
+
+}
+
+ints = setInterval(intervals, 500)
 farma();
 czyszczenieListy();
+intervals();
 
 function titleTimer() {
     var start = new Date();
